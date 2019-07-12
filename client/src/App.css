@@ -1,33 +1,38 @@
-.App {
-  text-align: center;
+@font-face {
+    font-family: 'safe_hamletregular';
+    src: url('safe-hamlet-webfont.woff2') format('woff2'),
+         url('safe-hamlet-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+body {
+    font-family: 'safe_hamletregular';
+    font-size: 24px;
+    background-image: url("./Background.png");
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+#layout {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: 1fr 48px 816px 48px 1fr;
+    border: none;
+    width: 100vw;
+    height: 100vh;
 }
 
-.App-link {
-  color: #61dafb;
+.sides {
+    background-image: url("./Background.png");
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.left-border {
+    z-index: 100;
+    background-image: url("./LeftBorder.png");
+}
+
+.right-border {
+    z-index: 100;
+    background-image: url("./RightBorder.png");
 }
