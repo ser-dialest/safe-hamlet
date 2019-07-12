@@ -1,65 +1,72 @@
-var db = require('../models');
-var jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const db = require('../models');
+require('dotenv').config();
+
 const saltRounds = 10;
-require("dotenv").config();
 
 // Routes
-// =============================================================
+
 module.exports = {
-  validateToken: function(req, res, next) {
-    return jwt.verify(req.body.token, process.env.JWT_SECRET, function(err, decoded) {
+  validateToken(req, res, next) {
+    return jwt.verify(req.body.token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
         return res.status(400).send({ msg: 'Bad token' });
       }
       req.user = decoded;
-      next();
-    });
-  },
-  
-  login: function(req, res) {
-    db.User.findOne({ username: req.body.username }).then(u => {
-      if (u === null) {
-        res.status(400).send({ msg: 'Invalid Username or Password' });
-      } else {
-        bcrypt.compare(req.body.password, u.password, function(err, bRes) {
-          if (!bRes) {
-            res.status(400).send({ msg: 'Invalid Username or Password' });
-          } else {
-            var token = jwt.sign({ username: u.username }, process.env.JWT_SECRET);
-            res.json({ username: u.username, token: token });
-          };
-        });
-      };
+      return next();
     });
   },
 
-  signup: function(req, res) {
+  login(req, res) {
+    db.User.findOne({ username: req.body.username }).then((u) => {
+      if (u === null) {
+        res.status(400).send({ msg: 'Invalid Username or Password' });
+      } else {
+        bcrypt.compare(req.body.password, u.password, (err, bRes) => {
+          const token = jwt.sign({ username: u.username }, process.env.JWT_SECRET);
+          if (!bRes) {
+            res.status(400).send({ msg: 'Invalid Username or Password' });
+          } else {
+            res.json({ username: u.username, token });
+          }
+        });
+      }
+    });
+  },
+
+  signup(req, res) {
     if (req.body.email) {
-      let regex = RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+      const regex = RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
       if (!regex.test(String(req.body.email).toLowerCase())) {
-        return res.status(400).send({msg: "Invalid Email Address"})
+        return res.status(400).send({ msg: 'Invalid Email Address' });
       }
     }
     if (req.body.password) {
-      let regex = RegExp(/^(?=.{8,})(?=.*[0-9])(?=.*[A-Za-z])/);
+      const regex = RegExp(/^(?=.{8,})(?=.*[0-9])(?=.*[A-Za-z])/);
       if (!regex.test(String(req.body.password))) {
-        return res.status(400).send({msg: "Password must contain letters and numbers and be at least 8 characters long."})
+        return res.status(400).send({ msg: 'Password must contain letters and numbers and be at least 8 characters long.' });
       }
     }
-    db.User.findOne({ username: req.body.username }).then(u => {
+    db.User.findOne({ username: req.body.username }).then((u) => {
       if (u) {
-        res.status(400).send({ msg: 'Invalid Username or Password' }) 
+        res.status(400).send({ msg: 'Invalid Username or Password' });
       } else {
-        bcrypt.genSalt(saltRounds, function(err, salt) {
-          bcrypt.hash(req.body.password, salt, function(err, hash) {
+        bcrypt.genSalt(saltRounds, (err, salt) => {
+          if (err) {
+            throw res.status(500).send({ msg: 'Failure to encrypt' });
+          }
+          bcrypt.hash(req.body.password, salt, (error, hash) => {
+            if (err) {
+              throw res.status(500).send({ msg: 'Failure to encrypt' });
+            }
             db.User.create({
               username: req.body.username,
-              email: "" || req.body.email,
+              email: '' || req.body.email,
               password: hash,
-            }).then(function(user) {
-              var token = jwt.sign({ username: user.username }, process.env.JWT_SECRET);
-              res.json({ username: user.username, token: token });
+            }).then((user) => {
+              const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET);
+              res.json({ username: user.username, token });
             });
           });
         });
@@ -67,18 +74,17 @@ module.exports = {
     });
   },
 
-  save: function(req, res) {
+  save(req, res) {
     db.User
-      .findOneAndUpdate({ "username": req.user.username}, {$set: {"state": req.body.state}})
+      .findOneAndUpdate({ username: req.user.username }, { $set: { state: req.body.state } })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
 
-  load: function(req, res) {
+  load(req, res) {
     db.User
-      .findOne({ "username": req.user.username})
+      .findOne({ username: req.user.username })
       .then(dbModel => res.json(dbModel.state))
       .catch(err => res.status(422).json(err));
-  }
+  },
 };
-
