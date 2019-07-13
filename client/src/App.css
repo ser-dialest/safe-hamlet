@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'safe_hamletregular';
-    src: url('safe-hamlet-webfont.woff2') format('woff2'),
-         url('safe-hamlet-webfont.woff') format('woff');
+    src: url('./assets/fonts/safe-hamlet-webfont.woff2') format('woff2'),
+         url('./assets/fonts/safe-hamlet-webfont.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
@@ -9,7 +9,7 @@
 body {
     font-family: 'safe_hamletregular';
     font-size: 24px;
-    background-image: url("./Background.png");
+    background-image: url("./assets/images/Background.png");
 }
 
 #layout {
@@ -17,22 +17,21 @@ body {
     top: 0;
     left: 0;
     display: grid;
-    grid-template-columns: 1fr 48px 816px 48px 1fr;
     border: none;
     width: 100vw;
     height: 100vh;
 }
 
 .sides {
-    background-image: url("./Background.png");
+    background-image: url("./assets/images/Background.png");
 }
 
 .left-border {
     z-index: 100;
-    background-image: url("./LeftBorder.png");
+    background-image: url("./assets/images/LeftBorder.png");
 }
 
 .right-border {
     z-index: 100;
-    background-image: url("./RightBorder.png");
+    background-image: url("./assets/images/RightBorder.png");
 }

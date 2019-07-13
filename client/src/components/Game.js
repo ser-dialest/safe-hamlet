@@ -9,7 +9,7 @@ class Game extends Component {
             // <Layout></Layout>
             <div>
                 <p>The game goes here.</p>
-                <p>Blah blah blah blah</p>
+                <p>{this.props.rowLength} {this.props.tileSize}</p>
             </div>
         );
     }
