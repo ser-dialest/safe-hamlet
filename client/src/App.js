@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import './App.css';
-import Game from "./components/Game"
+import Game from "./components/Game/";
 
 class App extends Component {
   constructor(props) {
@@ -31,18 +31,18 @@ class App extends Component {
   updateWindowDimensions() {
     const width = window.innerWidth;
     const currentSize = this.state.rowLength * this.state.tileSize * this.tileBase
-
     if (width < currentSize) {
+      // debugger;
       if (this.state.rowLength > this.minimumRow) { 
-        this.setState({ rowLength: this.state.rowLength - 2 });
+        this.setState({ rowLength: this.state.rowLength - 2 }, () => this.updateWindowDimensions());
       } else if (this.state.tileSize > this.minimumTile) {
-        this.setState({ rowLength: this.maximumRow, tileSize: this.state.tileSize - 1 });
+        this.setState({ rowLength: this.maximumRow, tileSize: this.state.tileSize - 1 }, () => this.updateWindowDimensions());
       }
     } else if (width > currentSize) {
       if (this.state.rowLength < this.maximumRow && width >= (this.state.rowLength + 2) * this.state.tileSize * this.tileBase) {
-        this.setState({ rowLength: this.state.rowLength +2 });
+        this.setState({ rowLength: this.state.rowLength +2 }, () => this.updateWindowDimensions());
       } else if (this.state.tileSize < this.maximumTile && width >= this.minimumRow * (this.state.tileSize + 1) * this.tileBase) {
-        this.setState({ rowLength: this.minimumRow, tileSize: this.state.tileSize + 1 });
+        this.setState({ rowLength: this.minimumRow, tileSize: this.state.tileSize + 1 }, () => this.updateWindowDimensions());
       }
     }
   }
