@@ -7,7 +7,10 @@ class Game extends Component {
     render() {
         return (
             // <Layout></Layout>
-            <p>The game goes here.</p>
+            <div>
+                <p>The game goes here.</p>
+                <p>Blah blah blah blah</p>
+            </div>
         );
     }
 };
