@@ -5,6 +5,7 @@ import React, { Component } from  "react";
 
 class Game extends Component {
     render() {
+        // this.butts();
         return (
             // <Layout></Layout>
             <div>

@@ -1,15 +1,23 @@
 import React, { Component } from "react";
-import './App.css';
 import Game from "./components/Game/";
+import './App.css';
+import background1 from "./assets/images/Background1.png";
+import background2 from "./assets/images/Background2.png";
+import background3 from "./assets/images/Background3.png";
+import rightBorder1 from "./assets/images/RightBorder1.png";
+import rightBorder2 from "./assets/images/RightBorder2.png";
+import rightBorder3 from "./assets/images/RightBorder3.png";
+import leftBorder1 from "./assets/images/LeftBorder1.png";
+import leftBorder2 from "./assets/images/LeftBorder2.png";
+import leftBorder3 from "./assets/images/LeftBorder3.png";
 
 class App extends Component {
   constructor(props) {
     super(props);
-  
+
     // rowLength determines the number of tiles that will be rendered. Either 19, 17, or 15
     // tileSize determines whether each tile will be 16, 32, or 48 pixels (for 1, 2, or 3, respectively)
     this.state = { rowLength: 19, tileSize: 3 };
-
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
   
@@ -23,6 +31,11 @@ class App extends Component {
   maximumRow = 19;
   minimumRow = 15;
 
+  // arrays of images to be called dynamically
+  background = [undefined, background1, background2, background3];
+  rightBorder = [undefined, rightBorder1, rightBorder2, rightBorder3];
+  leftBorder = [undefined, leftBorder1, leftBorder2, leftBorder3];
+
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
@@ -32,7 +45,6 @@ class App extends Component {
     const width = window.innerWidth;
     const currentSize = this.state.rowLength * this.state.tileSize * this.tileBase
     if (width < currentSize) {
-      // debugger;
       if (this.state.rowLength > this.minimumRow) { 
         this.setState({ rowLength: this.state.rowLength - 2 }, () => this.updateWindowDimensions());
       } else if (this.state.tileSize > this.minimumTile) {
@@ -48,19 +60,33 @@ class App extends Component {
   }
 
   render() {
+    const tilePixels = this.state.tileSize * this.tileBase;
+
     return (
       <div 
         id='layout'
-        style={{gridTemplateColumns: `1fr 48px ${this.state.rowLength * this.state.tileSize * this.tileBase - (48 * 2)}px 48px 1fr`}}
+        style={{gridTemplateColumns: `1fr ${tilePixels}px ${this.state.rowLength * (tilePixels - 2)}px ${tilePixels}px 1fr`}}
       >
-        <div className='sides'></div>
-        <div className="sides left-border"></div>
+        <div 
+          className="sides"
+          style={{backgroundImage: `url(${this.background[this.state.tileSize]})`}}
+        />
+        <div 
+          className="sides"
+          style={{backgroundImage: `url(${this.leftBorder[this.state.tileSize]})`}}
+        />
         <Game
           rowLength={this.state.rowLength}
           tileSize={this.state.tileSize}
-        ></Game>
-        <div className="sides right-border"></div>
-        <div className='sides'></div>  
+        />
+        <div 
+          className="sides"
+          style={{backgroundImage: `url(${this.rightBorder[this.state.tileSize]})`}}
+        />
+        <div 
+          className="sides" 
+          style={{backgroundImage: `url(${this.background[this.state.tileSize]})`}}
+        />
       </div>
     );
   }

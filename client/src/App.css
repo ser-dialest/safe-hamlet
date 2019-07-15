@@ -9,7 +9,6 @@
 body {
     font-family: 'safe_hamletregular';
     font-size: 24px;
-    background-image: url("./assets/images/Background.png");
 }
 
 #layout {
@@ -23,15 +22,5 @@ body {
 }
 
 .sides {
-    background-image: url("./assets/images/Background.png");
-}
-
-.left-border {
     z-index: 100;
-    background-image: url("./assets/images/LeftBorder.png");
-}
-
-.right-border {
-    z-index: 100;
-    background-image: url("./assets/images/RightBorder.png");
 }
