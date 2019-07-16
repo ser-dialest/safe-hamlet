@@ -44,6 +44,7 @@ class App extends Component {
   updateWindowDimensions() {
     const width = window.innerWidth;
     const currentSize = this.state.rowLength * this.state.tileSize * this.tileBase
+    
     if (width < currentSize) {
       if (this.state.rowLength > this.minimumRow) { 
         this.setState({ rowLength: this.state.rowLength - 2 }, () => this.updateWindowDimensions());
