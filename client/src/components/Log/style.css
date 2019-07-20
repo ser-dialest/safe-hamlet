@@ -1,0 +1,6 @@
+#log {
+    /* background-color: red; */
+    display: grid;
+    grid-row: 2;
+    grid-column: 3;
+}

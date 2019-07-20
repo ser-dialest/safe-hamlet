@@ -30,6 +30,7 @@ class App extends Component {
   // To have a central camera position, it must always be odd
   maximumRow = 19;
   minimumRow = 15;
+  column = 13
 
   // arrays of images to be called dynamically
   background = [undefined, background1, background2, background3];
@@ -66,7 +67,7 @@ class App extends Component {
     return (
       <div 
         id='layout'
-        style={{gridTemplateColumns: `1fr ${tilePixels}px ${this.state.rowLength * (tilePixels - 2)}px ${tilePixels}px 1fr`}}
+        style={{gridTemplateColumns: `1fr ${tilePixels}px ${(this.state.rowLength - 2) * tilePixels}px ${tilePixels}px 1fr`}}
       >
         <div 
           className="sides"
@@ -78,7 +79,9 @@ class App extends Component {
         />
         <Game
           rowLength={this.state.rowLength}
+          columnLength={this.column}
           tileSize={this.state.tileSize}
+          tileBase={this.tileBase}
         />
         <div 
           className="sides"

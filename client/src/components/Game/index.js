@@ -1,16 +1,32 @@
 import React, { Component } from  "react";
-// import Layout from "../components/Layout";
+import PlayField from "../PlayField";
+import map from "./mapArray";
+import "./style.css";
 
-// The layout will likely end up beign defined on this page
-//  The props are: rowLength, tileSize
 
 class Game extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            camera: [0,0],
+        }
+    }
+
     render() {
         return (
-            // <Layout></Layout>
-            <div>
-                <p>The game goes here.</p>
-                <p>{this.props.rowLength} {this.props.tileSize}</p>
+            <div
+                id="game"
+            >
+                <PlayField 
+                    rowLength={this.props.rowLength}
+                    columnLength={this.props.columnLength}
+                    tileSize={this.props.tileSize}
+                    tileBase={this.props.tileBase}
+                    camera={this.state.camera}
+                    map={map}
+                />
+                <p>Here is some text</p>
             </div>
         );
     }
